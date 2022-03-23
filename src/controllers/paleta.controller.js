@@ -1,7 +1,8 @@
 const paletasService = require('../services/paleta.service');
+const mongoose = require('mongoose');
 
-const findAllPaletasController = (req, res) => {
-  const paletas = paletasService.findAllPaletasService();
+const findAllPaletasController = async (req, res) => {
+  const paletas = await paletasService.findAllPaletasService();
 
   if (paletas.length == 0) {
     return res
@@ -12,14 +13,14 @@ const findAllPaletasController = (req, res) => {
   res.send(paletas);
 };
 
-const findByIdPaletaController = (req, res) => {
-  const parametroId = Number(req.params.id);
+const findByIdPaletaController = async (req, res) => {
+  const idParam = req.params.id;
 
-  if (!parametroId) {
+  if (!mongoose.Types.ObjectId.isValid(idParam)) {
     return res.status(400).send({ message: 'Id inválido!' });
   }
 
-  const escolhaPaleta = paletasService.findByIdPaletaService(parametroId);
+  const escolhaPaleta = await paletasService.findByIdPaletaService(idParam);
 
   if (!escolhaPaleta) {
     return res.status(404).send({ message: 'Paleta não encontrada!' });
@@ -28,7 +29,7 @@ const findByIdPaletaController = (req, res) => {
   res.send(escolhaPaleta);
 };
 
-const createPaletaController = (req, res) => {
+const createPaletaController = async (req, res) => {
   const paleta = req.body;
 
   if (
@@ -43,14 +44,14 @@ const createPaletaController = (req, res) => {
       .send({ message: 'Envie o todos os campos da paleta!' });
   }
 
-  const newPaleta = paletasService.createPaletaService(paleta);
+  const newPaleta = await paletasService.createPaletaService(paleta);
   res.status(201).send(newPaleta);
 };
 
-const updatePaletaController = (req, res) => {
-  const idParam = Number(req.params.id);
+const updatePaletaController = async (req, res) => {
+  const idParam = req.params.id;
 
-  if (!idParam) {
+  if (!mongoose.Types.ObjectId.isValid(idParam)) {
     return res.status(400).send({ message: 'Id inválido!' });
   }
 
@@ -68,16 +69,20 @@ const updatePaletaController = (req, res) => {
       .send({ message: 'Envie o todos os campos da paleta!' });
   }
 
-  const updatedPaleta = paletasService.updatePaletaService(idParam, paletaEdit);
+  const updatedPaleta = await paletasService.updatePaletaService(
+    idParam,
+    paletaEdit,
+  );
+
   res.send(updatedPaleta);
 };
 
-const deletePaletaController = (req, res) => {
-  const idParam = Number(req.params.id);
-  if (!idParam) {
+const deletePaletaController = async (req, res) => {
+  const idParam = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(idParam)) {
     return res.status(400).send({ message: 'Id inválido!' });
   }
-  paletasService.deletePaletaService(idParam);
+  await paletasService.deletePaletaService(idParam);
 
   res.send({ message: 'Paleta deletada com sucesso!' });
 };
@@ -87,5 +92,5 @@ module.exports = {
   findByIdPaletaController,
   createPaletaController,
   updatePaletaController,
-  deletePaletaController,
+  deletePaletaController
 };
