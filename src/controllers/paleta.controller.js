@@ -2,15 +2,15 @@ const paletasService = require('../services/paleta.service');
 const mongoose = require('mongoose');
 
 const findAllPaletasController = async (req, res) => {
-  const paletas = await paletasService.findAllPaletasService();
+  const allPaletas = await paletasService.findAllPaletasService();
 
-  if (paletas.length == 0) {
+  if (allPaletas.length == 0) {
     return res
       .status(404)
       .send({ message: 'Não existe nenhuma paleta cadastrada!' });
   }
 
-  res.send(paletas);
+  res.send(allPaletas);
 };
 
 const findByIdPaletaController = async (req, res) => {
@@ -20,13 +20,13 @@ const findByIdPaletaController = async (req, res) => {
     return res.status(400).send({ message: 'Id inválido!' });
   }
 
-  const escolhaPaleta = await paletasService.findByIdPaletaService(idParam);
+  const chosenPaleta = await paletasService.findByIdPaletaService(idParam);
 
-  if (!escolhaPaleta) {
+  if (!chosenPaleta) {
     return res.status(404).send({ message: 'Paleta não encontrada!' });
   }
 
-  res.send(escolhaPaleta);
+  res.send(chosenPaleta);
 };
 
 const createPaletaController = async (req, res) => {
@@ -55,14 +55,14 @@ const updatePaletaController = async (req, res) => {
     return res.status(400).send({ message: 'Id inválido!' });
   }
 
-  const paletaEdit = req.body;
+  const editPaleta = req.body;
 
   if (
-    !paletaEdit ||
-    !paletaEdit.sabor ||
-    !paletaEdit.descricao ||
-    !paletaEdit.foto ||
-    !paletaEdit.preco
+    !editPaleta ||
+    !editPaleta.sabor ||
+    !editPaleta.descricao ||
+    !editPaleta.foto ||
+    !editPaleta.preco
   ) {
     return res
       .status(400)
@@ -71,7 +71,7 @@ const updatePaletaController = async (req, res) => {
 
   const updatedPaleta = await paletasService.updatePaletaService(
     idParam,
-    paletaEdit,
+    editPaleta,
   );
 
   res.send(updatedPaleta);
