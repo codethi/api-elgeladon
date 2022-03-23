@@ -1,5 +1,4 @@
 const paletasService = require('../services/paleta.service');
-const mongoose = require('mongoose');
 
 const findAllPaletasController = async (req, res) => {
   const allPaletas = await paletasService.findAllPaletasService();
