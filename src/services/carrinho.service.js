@@ -5,17 +5,17 @@ const findAllCarrinhoService = async () => {
   return allCarrinho;
 };
 
-const createCarrinhoService = async (newCarrinho) => {
-  const createdCarrinho = await Carrinho.create(newCarrinho);
+const createManyCarrinhoService = async (newCarrinho) => {
+  const createdCarrinho = await Carrinho.insertMany(newCarrinho);
   return createdCarrinho;
 };
 
-const deleteCarrinhoService = async (idParam) => {
-  return await Carrinho.findByIdAndDelete(idParam);
+const deleteAllCarrinhoService = async () => {
+  return await Carrinho.deleteMany();
 };
 
 module.exports = {
   findAllCarrinhoService,
-  createCarrinhoService,
-  deleteCarrinhoService,
+  createManyCarrinhoService,
+  deleteAllCarrinhoService,
 };

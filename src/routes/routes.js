@@ -35,13 +35,11 @@ route.delete(
 route.get('/all-carrinho', controllerCarrinho.findAllCarrinhoController);
 route.post(
   '/create-carrinho',
-  validObjectBodyCarrinho,
-  controllerCarrinho.createCarrinhoController,
+  controllerCarrinho.createManyCarrinhoController,
 );
 route.delete(
-  '/delete-carrinho/:id',
-  validId,
-  controllerCarrinho.deleteCarrinhoController,
+  '/finish-carrinho',
+  controllerCarrinho.deleteAllCarrinhoController,
 );
 
 module.exports = route;
